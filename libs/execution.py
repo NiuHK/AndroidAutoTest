@@ -143,7 +143,23 @@ class Execution:
                     print("[click_point] match and point are None")
         except Exception as e:
             print(f"[click_point] Error: {e}")
-            
+    
+    def swipe(self, start, end, duration=100):
+        """
+        模拟滑动操作。
+
+        参数:
+        start (tuple): 起始点坐标 (x, y)。
+        end (tuple): 结束点坐标 (x, y)。
+        duration (int, 可选): 滑动持续时间，默认为 100 毫秒。
+
+        异常:
+        如果发生异常，打印错误信息。
+        """
+        try:
+            self.adbkit.swip(start,end,duration)
+        except Exception as e:
+            print(f"[swipe] Error: {e}")
             
             
     def wait_color(self, top_left, width, height, color,distance_threshold=50,print_info=False):
@@ -203,23 +219,6 @@ class Execution:
             # 将颜色均值转换为十六进制格式
             hex_color = "#{:02x}{:02x}{:02x}".format(int(mean_color[0]), int(mean_color[1]), int(mean_color[2]))
             is_same=is_same_color_family_distance(hex_color, color,distance_threshold)
-            # if print_info:
-            #     # 使用最佳匹配绘制矩形框
-            #     bottom_right = (x + width, y + height)
-            #     middle_point = (x + width // 2, y + height // 2)
-            #     # 保存图片
-            #     save_path = 'latest_image.jpg'  # 指定保存路径
-            #     cv2.imwrite(save_path, target_img)
-                
-            #     cv2.circle(target_img, middle_point, 5, (0, 0, 255), -1)
-            #     cv2.rectangle(target_img, (x, y), bottom_right, (0, 255, 0), 2)
-
-            #     target_img_rgb = cv2.cvtColor(target_img, cv2.COLOR_BGR2RGB)
-            #     plt.imshow(target_img_rgb)
-            #     plt.axis('off')  # 隐藏坐标轴
-            #     plt.show()
-                
-            #     print(f" mean_color: {mean_color} , {hex_color} , oragional  {color} , is_same: {is_same}")
             if is_same and print_info:
                 # 使用最佳匹配绘制矩形框
                 bottom_right = (x + width, y + height)

@@ -3,8 +3,6 @@
 
 """ADB"""
 
-__author__ = 'xiaocai'
-
 import subprocess
     
     
@@ -29,3 +27,7 @@ class adbKit(object):
         
     def click(self, point, serialNumber=None):
         return self.command('shell input tap '+str(point[0])+' '+str(point[1]), serialNumber)
+    
+    def swip(self, a,b,speed, serialNumber=None):
+        return self.command(f'shell input swipe {a[0]} {a[1]} {b[0]} {b[1]} {speed}')
+    
