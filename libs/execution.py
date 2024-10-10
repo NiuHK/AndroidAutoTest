@@ -117,6 +117,30 @@ class Execution:
             print(f"[find_templete] Error: {e}")
         return None, None
 
+    def wait_templete(self, find_img_path, value=0.8, print_info=False, img=None):
+        try:
+            while True:
+                if img is not None:
+                    target_img = img
+                else:
+                    target_img = cv2_latest_image(self.image_buffer)
+                find_img = cv2.imread(find_img_path)
+
+                if target_img is None or find_img is None:
+                    print(f"[find_templete] Failed to read images: target_img:{target_img is not None} find_img:{find_img is not None}")
+                    return None, None
+
+                best_match, best_val, best_loc = match_template(target_img, find_img)
+
+                if best_val >= value:
+                    if print_info :
+                        print(f" Best match value: {best_val}")
+                    return best_match, best_loc
+                else:
+                    continue
+        except Exception as e:
+            print(f"[find_templete] Error: {e}")
+        return None, None
             
     def click_point(self,match,point):
         """
@@ -161,8 +185,21 @@ class Execution:
         except Exception as e:
             print(f"[swipe] Error: {e}")
             
-            
-    def wait_color(self, top_left, width, height, color,distance_threshold=50,print_info=False):
+    def send_key_event(self, keycode):
+        """
+        发送按键事件。
+
+        参数:
+        keycode (int): 按键代码。
+
+        异常:
+        如果发生异常，打印错误信息。
+        """
+        try:
+            self.adbkit.send_key_event(keycode)
+        except Exception as e:
+            print(f"[send_key_event] Error: {e}")
+    def wait_color(self, top_left, width, height, color,distance_threshold=70,print_info=False):
         """
         等待指定区域的颜色达到目标颜色。
         参数:
@@ -219,6 +256,7 @@ class Execution:
             # 将颜色均值转换为十六进制格式
             hex_color = "#{:02x}{:02x}{:02x}".format(int(mean_color[0]), int(mean_color[1]), int(mean_color[2]))
             is_same=is_same_color_family_distance(hex_color, color,distance_threshold)
+            # if print_info:
             if is_same and print_info:
                 # 使用最佳匹配绘制矩形框
                 bottom_right = (x + width, y + height)

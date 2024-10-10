@@ -34,7 +34,7 @@ def start_server():
 def run_b_script():
     subprocess.run(["mitmdump", "-s", "b.py","--quiet"])
 
-
+# mitmdump -s
 
 def op(list):
     input("any key to continue")

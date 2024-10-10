@@ -31,3 +31,5 @@ class adbKit(object):
     def swip(self, a,b,speed, serialNumber=None):
         return self.command(f'shell input swipe {a[0]} {a[1]} {b[0]} {b[1]} {speed}')
     
+    def send_key_event(self, keycode, serialNumber=None):
+        return self.command(f'shell input keyevent {keycode}', serialNumber)
